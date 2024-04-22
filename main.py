@@ -20,7 +20,7 @@ def send_to_firebase(data):
 def find_angle(point1, point2):
 	point2[0] -= point1[0]
 	point2[1] -= point1[1]
-	return math.abs(math.atan2(point2[1],point2[0]))
+	return abs(math.atan2(point2[1],point2[0]))
 
 
 
