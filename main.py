@@ -22,6 +22,10 @@ def find_angle(point1, point2):
 	point2[1] -= point1[1]
 	return abs(math.atan2(point2[1],point2[0]))
 
+def rad_to_deg(radians):
+	degrees = radians * (180 / math.pi)
+	return degrees
+
 
 
 # Open the webcam
