@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import requests
 import time
+import math
 
 # Set up firebase
 firebase_database_url = 'https://ssm-csu-default-rtdb.firebaseio.com/'
@@ -15,6 +16,13 @@ def send_to_firebase(data):
 			print("Failed to send data to firebase: ", response.text)
 	except Exception as e:
 		print("Error sending data to firebase: ", str(e))
+
+def find_angle(point1, point2):
+	point2[0] -= point1[0]
+	point2[1] -= point1[1]
+	return math.abs(math.atan2(point2[1],point2[0]))
+
+
 
 # Open the webcam
 cam = cv2.VideoCapture(0)
