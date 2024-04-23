@@ -26,8 +26,6 @@ def rad_to_deg(radians):
 	degrees = radians * (180 / math.pi)
 	return degrees
 
-
-
 # Open the webcam
 cam = cv2.VideoCapture(0)
 
@@ -43,7 +41,6 @@ while True:
 		break
       
 	# Convert BGR image to HSV
-	frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
 	# Define lower and upper bounds for blue color in HSV
