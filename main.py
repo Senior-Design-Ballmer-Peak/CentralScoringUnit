@@ -43,6 +43,7 @@ while True:
 		break
       
 	# Convert BGR image to HSV
+	frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
 	# Define lower and upper bounds for blue color in HSV
@@ -88,26 +89,26 @@ while True:
 				y_data = y
 				radius_data = radius
 
-	change_in_distance = sqrt((x_data-prev_x)^2+(y_data-prev_y)^2)
+	change_in_distance = math.sqrt((x_data - prev_x)**2 + (y_data - prev_y)**2)
 	prev_x = x_data
 	prev_y = y_data
 
-	current_time_time = time.time()
-    time_difference = current_time - prev_time
+	current_time = time.time()
+	time_difference = current_time - prev_time
 	prev_time = current_time
 
-	if radius_data != 0 {
-		speed = change_in_distance * (15/radius_data) / time_difference 
-	}
+	if radius_data != 0:
+		speed = change_in_distance * (20 / radius_data) / time_difference 
 
 	data = {
 		"in_frame": in_frame,
 		"x": x_data,
 		"y": y_data,
-		"rad": radius_data
+		"rad": radius_data,
 		"speed": speed
 	}
-	send_to_firebase(data)
+	print(f"Speed: {speed}")
+	# send_to_firebase(data)
 
 	# Display the frame with detected puck
 	cv2.imshow("Air Hockey Puck Detection", frame)
