@@ -1,11 +1,12 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 import requests
 import time
 import math
 
 # Set up firebase
-firebase_database_url = 'https://ssm-csu-default-rtdb.firebaseio.com/'
+firebase_database_url = 'https://ssm-csu-default-rtdb.firebaseio.com/game_data'
 
 def send_to_firebase(data):
 	try:
@@ -27,12 +28,22 @@ def rad_to_deg(radians):
 	return degrees
 
 # Open the webcam
-cam = cv2.VideoCapture(0)
+videoPath = 'IMG_2661.MOV'
+cam = cv2.VideoCapture(videoPath)
 
 # Initialize variables
 prev_time = time.time()
 prev_x = 0
 prev_y = 0
+prev_speed = 0
+
+# DUBUG GRAPH
+plt.ion()
+fig, ax = plt.subplots()
+scatter = ax.scatter([], [])
+ax.set_xlim(0, 1080) 
+ax.set_ylim(0, 1920)
+ax.set_title('Puck Movement')
 
 while True:
 	ret, frame = cam.read()
@@ -55,10 +66,10 @@ while True:
 
 	# Filter contours by area and circularity
 	in_frame = False
-	x_data = 0
-	y_data = 0
+	x_data = prev_x
+	y_data = prev_y
 	radius_data = 0
-	speed = 0
+	speed = prev_speed
 
 	largest_contour = None
 	largest_area = 0
@@ -69,12 +80,12 @@ while True:
 			largest_contour = contour
 		
 		
-	if largest_contour is not None:
+	if largest_contour is not None and largest_area > 5000:
 		perimeter = cv2.arcLength(contour, True)
+		print(largest_area)
 		if perimeter != 0:
 			circularity = 4 * np.pi * largest_area / (perimeter ** 2)
 			
-			# You may need to adjust the circularity threshold based on your puck size and shape
 			if circularity > 0.3:
 				# Draw a circle around the detected puck
 				(x, y), radius = cv2.minEnclosingCircle(contour)
@@ -96,16 +107,20 @@ while True:
 
 	if radius_data != 0:
 		speed = change_in_distance * (20 / radius_data) / time_difference 
+		prev_speed = speed
 
 	data = {
 		"in_frame": in_frame,
 		"x": x_data,
 		"y": y_data,
-		"rad": radius_data,
 		"speed": speed
 	}
-	print(f"Speed: {speed}")
-	# send_to_firebase(data)
+
+	send_to_firebase(data)
+
+	scatter.set_offsets(np.c_[x_data, y_data])
+	fig.canvas.draw_idle()
+	plt.pause(0.01)
 
 	# Display the frame with detected puck
 	cv2.imshow("Air Hockey Puck Detection", frame)
