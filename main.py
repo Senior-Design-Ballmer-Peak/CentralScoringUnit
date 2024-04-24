@@ -106,7 +106,7 @@ while True:
 	prev_time = current_time
 
 	if radius_data != 0:
-		speed = change_in_distance * (20 / radius_data) / time_difference 
+		speed = change_in_distance * (2 / radius_data) / time_difference
 		prev_speed = speed
 
 	data = {
