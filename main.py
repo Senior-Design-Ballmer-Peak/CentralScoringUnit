@@ -106,7 +106,6 @@ while True:
 
     change_in_distance = math.sqrt((x_data - prev_x) ** 2 + (y_data - prev_y) ** 2)
     angle = find_angle((prev_x, prev_y), (x_data, y_data))
-    print(angle)
     prev_x = x_data
     prev_y = y_data
 
@@ -123,6 +122,7 @@ while True:
         "x": x_data,
         "y": y_data,
         "speed": speed
+		"angle": angle
     }
 
     send_to_firebase(data)
