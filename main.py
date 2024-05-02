@@ -22,8 +22,8 @@ def send_to_firebase(data):
 
 def find_angle(point1, point2):
     vectorx = point2[0] - point1[0]
-    vectory = point2  [1] - point1[1]
-    angle_rad = abs(math.atan2(vectory, vectorx) - math.pi/2)
+    vectory = point2[1] - point1[1]
+    angle_rad = abs(math.atan2(vectory, vectorx) - math.pi / 2)
     angle_deg = rad_to_deg(angle_rad)
     if angle_deg > 180:
         angle_deg -= 180
@@ -121,8 +121,8 @@ while True:
         "in_frame": in_frame,
         "x": x_data,
         "y": y_data,
-        "speed": speed
-		"angle": angle
+        "speed": speed,
+        "angle": angle
     }
 
     send_to_firebase(data)
