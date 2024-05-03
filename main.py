@@ -60,8 +60,12 @@ while True:
         print("Failed to capture frame")
         break
 
+    x, y, w, h = 150, 55, 1000, 600
+
+    cropped_frame = frame[y:y+h, x:x+w]
+
     # Convert BGR image to HSV
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(cropped_frame, cv2.COLOR_BGR2HSV)
 
     # Define lower and upper bounds for blue color in HSV
     lower_blue = np.array([110, 100, 100])
@@ -99,7 +103,7 @@ while True:
                 (x, y), radius = cv2.minEnclosingCircle(contour)
                 center = (int(x), int(y))
                 radius = int(radius)
-                cv2.circle(frame, center, radius, (0, 255, 0), 2)
+                cv2.circle(cropped_frame, center, radius, (0, 255, 0), 2)
                 in_frame = True
                 x_data = x
                 y_data = y
@@ -135,7 +139,7 @@ while True:
     plt.pause(0.01)
 
     # Display the frame with detected puck
-    cv2.imshow("Air Hockey Puck Detection", frame)
+    cv2.imshow("Air Hockey Puck Detection", cropped_frame)
 
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'):
