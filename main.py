@@ -23,10 +23,10 @@ def send_to_firebase(data):
 def find_angle(point1, point2):
     vectorx = point2[0] - point1[0]
     vectory = point2[1] - point1[1]
-    angle_rad = abs(math.atan2(vectory, vectorx) - math.pi / 2)
+    angle_rad = math.atan2(vectory, vectorx)
     angle_deg = rad_to_deg(angle_rad)
-    if angle_deg > 180:
-        angle_deg -= 180
+    # if angle_deg > 180:
+    #     angle_deg -= 180
     return angle_deg
 
 
@@ -52,6 +52,7 @@ scatter = ax.scatter([], [])
 ax.set_xlim(0, 1080)
 ax.set_ylim(0, 1920)
 ax.set_title('Puck Movement')
+angle = 0
 
 while True:
     ret, frame = cam.read()
@@ -105,7 +106,9 @@ while True:
                 radius_data = radius
 
     change_in_distance = math.sqrt((x_data - prev_x) ** 2 + (y_data - prev_y) ** 2)
-    angle = find_angle((prev_x, prev_y), (x_data, y_data))
+    if x_data != prev_x and y_data != prev_y:
+        angle = find_angle((prev_x, prev_y), (x_data, y_data))
+    print(angle)
     prev_x = x_data
     prev_y = y_data
 
